@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 #include <malloc.h>
+
+
 typedef char DataType ;
 
 typedef struct Node{
@@ -91,7 +93,7 @@ BiTreeNode* DeleteRightTree(BiTreeNode *curr){
     return curr ;
 }
 
-//二叉树的遍历
+//二叉树的遍历（递归的实现方法）
 //前序遍历                        函数虚参
 void PreOrder(BiTreeNode *root, void visit(DataType item)){
     //DLR
@@ -128,6 +130,8 @@ void PostOrder(BiTreeNode *root, void visit(DataType item)){
         visit(root->data) ;
     }
 }
+
+
 
 //查找数据元素
 BiTreeNode* Search(BiTreeNode *root, DataType x){
