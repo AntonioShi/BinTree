@@ -135,7 +135,7 @@ void LRD(BiTreeNode *root)
 }
 
 int main() {
-
+//
     BiTreeNode *root, *p ;
     Initiate(&root) ;
     p = InsertLeftNode(root, 'A') ;
