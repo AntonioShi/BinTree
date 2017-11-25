@@ -41,7 +41,7 @@ BiTreeNode* InsertLeftNode(BiTreeNode *curr, DataType x){
     s->rightChild = NULL ;
     curr->leftChild = s ;//链接成功
 
-    return curr->leftChild ;
+    return curr->leftChild ;//
 }
 
 //右插入结点
