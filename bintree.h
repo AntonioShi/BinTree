@@ -62,7 +62,7 @@ BiTreeNode* InsertRightNode(BiTreeNode *curr, DataType x){
     s->leftChild = NULL ;
     curr->rightChild = s ;//链接成功
 
-    return curr->leftChild ;
+    return curr->rightChild ;//我是傻瓜
 }
 
 //删除左子树

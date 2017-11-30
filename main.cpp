@@ -19,28 +19,30 @@
 #include <stack>
 #include <iostream>
 using namespace std;
+int NumNode = 0 ;//结点总数
+int LeaveNode = 0 ;//叶结点总数
+int Height = 0 ;//高度
 
 //层序遍历
-void HierachyOrder(BiTreeNode *root)
-{
+void HierachyOrder(BiTreeNode *root) {
 
     if (root == NULL)
         return;
     queue<BiTreeNode *> Q;//生成队列
-    BiTreeNode *p = root;//根结点,没有东西，不用输出
+    BiTreeNode *p = root;//没有数据，不用输出
 
     if (p->leftChild)
         Q.push(p->leftChild);
     if (p->rightChild)
         Q.push(p->rightChild);
 
-    //这里有问题，但不知原因。
     while (!Q.empty())
     {//出队列：队列非空
         p = Q.front();
         Q.pop();
 
-        printf("%c", p->data);
+        printf("%c  ", p->data);
+        NumNode++ ;
         if (p->leftChild)
             Q.push(p->leftChild);
         if (p->rightChild)
@@ -75,8 +77,7 @@ void DLR(BiTreeNode *root){
 }
 
 /*回溯算法
- * void preOrderIter2(struct node *root)
-{
+ * void preOrderIter2(struct node *root){
     stack<struct node *> s;
     while (root != NULL || !s.empty()) {
         if (root != NULL) {
@@ -93,9 +94,7 @@ void DLR(BiTreeNode *root){
 }
  */
 
-
-void LDR(BiTreeNode *root)
-{
+void LDR(BiTreeNode *root) {
     stack<BiTreeNode *> s;
     while (root != NULL || !s.empty()) {
         if (root != NULL) {
@@ -112,8 +111,7 @@ void LDR(BiTreeNode *root)
     cout << endl;
 }
 
-void LRD(BiTreeNode *root)
-{
+void LRD(BiTreeNode *root) {
     if (!root) return;
     stack<BiTreeNode *> s, output;
     s.push(root);
@@ -134,6 +132,25 @@ void LRD(BiTreeNode *root)
     cout << endl;
 }
 
+int BTreeLeaves(BiTreeNode *cur) {
+    //当为空时，返回0；当找到叶子时返回1
+    if (!cur) return 0;
+    else if (!cur->leftChild && !cur->rightChild)
+        return 1;
+    else
+        return BTreeLeaves(cur->leftChild) + BTreeLeaves(cur->rightChild);
+}
+
+int BTreeHeight(BiTreeNode *cur) {
+    if (!cur) return 0;
+    else {
+        //二叉树的高度为左右子树的最大者+1
+        int leftHei = BTreeHeight(cur->leftChild);
+        int rightHei = BTreeHeight(cur->rightChild);
+        return (leftHei > rightHei) ? leftHei + 1 : rightHei + 1;
+    }
+}
+
 int main() {
 //
     BiTreeNode *root, *p ;
@@ -141,19 +158,27 @@ int main() {
     p = InsertLeftNode(root, 'A') ;
     p = InsertLeftNode(p, 'B') ;
     p = InsertLeftNode(p, 'D') ;
-    p = InsertRightNode(p, 'G') ;
+    InsertLeftNode(p, 'G') ;
+    p = InsertRightNode(p, 'H') ;
     p = InsertRightNode(root->leftChild, 'C') ;
     InsertLeftNode(p, 'E') ;
-    InsertRightNode(p, 'F') ;
+    p = InsertRightNode(p, 'F') ;
+    InsertLeftNode(p, 'I') ;
+    InsertRightNode(p, 'J') ;
 
 
-    PreOrder(root->leftChild, visit) ;//因为前中后三种遍历的顺序L都在R前面，且对于D只是访问它的数据，不影响指针问题，所以首次调用传入左孩子
-    printf("\n");
-    DLR(root->leftChild) ;
-    printf("\n");
     printf("层序遍历二叉树\n") ;
     HierachyOrder(root);
+    cout << "\n前序遍历：" << endl ;
+    DLR(root->leftChild) ;
+    cout << "中序遍历：" << endl ;
+    LDR(root->leftChild) ;
+    cout << "后序遍历：" << endl ;
+    LRD(root->leftChild) ;
 
+    LeaveNode = BTreeLeaves(root) ;//求叶子数目
+    Height = BTreeHeight(root) ;//二叉树高度
+    cout << "\n总结点数：" << NumNode << " 叶子结点总数 : " << LeaveNode << " 树的高度：" << Height << endl;
     printf("\n撤销树\n") ;
     Destory(&root) ;
     return 0;
